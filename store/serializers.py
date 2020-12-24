@@ -1,10 +1,9 @@
-from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
 from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from store.models import Category, SubCategory, Color, Product, OrderLine, Order, Favorite, Rate, Like, \
-    SeasonalDiscount, ProductOnSeasonalDiscount
+    SeasonalDiscount, ProductOnSeasonalDiscount, DeliveryFee
 
 
 class CategorySerializer(ModelSerializer):
@@ -152,3 +151,11 @@ class SeasonalDiscountSerializer(ModelSerializer):
                 'read_only': True,
             }
         }
+
+
+class DeliveryFeeSerializer(ModelSerializer):
+    region = StringRelatedField()
+
+    class Meta:
+        model = DeliveryFee
+        fields = ['id', 'fee', 'region']

@@ -11,19 +11,23 @@ class User(bUser):
 
 
 class Profile(bProfile):
-    pass
+    def __str__(self):
+        return self.user.full_name
 
 
 class Region(bRegion):
-    pass
+    def __str__(self):
+        return self.name
 
 
 class State(bState):
-    pass
+    def __str__(self):
+        return self.name
 
 
 class City(bCity):
-    pass
+    def __str__(self):
+        return self.name
 
 
 class PasswordReset(bPasswordReset):
