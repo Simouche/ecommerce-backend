@@ -23,7 +23,7 @@ class SubCategoryViewSet(ModelViewSet):
 
 class ColorViewSet(ModelViewSet):
     serializer_class = ColorSerializer
-    queryset = Color.objects.filter(visible=True)
+    queryset = Color.objects.all()
     permission_classes = [IsAdminOrReadOnly]
 
 
