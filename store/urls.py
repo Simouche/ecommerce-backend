@@ -7,8 +7,8 @@ from store.apis import CategoryViewSet, SubCategoryViewSet, ColorViewSet, Produc
 
 router = SimpleRouter()
 
-router.register('categories', CategoryViewSet, basename='categories')
 router.register('categories/sub-categories', SubCategoryViewSet, basename='sub-categories')
+router.register('categories', CategoryViewSet, basename='categories')
 router.register('colors', ColorViewSet, basename='colors')
 router.register('products', ProductViewSet, basename='products')
 router.register('orders', OrderViewSet, basename='orders')
