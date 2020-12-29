@@ -84,8 +84,7 @@ class OrderSerializer(ModelSerializer):
     def create(self, validated_data):
         lines = validated_data.pop('lines')
         number = Order.generate_number()
-        order = Order.objects.create(number=number, **validated_data)
-        order.profile = self.context['request'].user.profile
+        order = Order.objects.create(number=number,profile=self.context['request'].user.profile, **validated_data)
         for line in lines:
             OrderLine.objects.create(order=order, **line)
         return order
