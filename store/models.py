@@ -110,7 +110,7 @@ class Order(DeletableModel):
 
     profile = models.ForeignKey('authentication.Profile', related_name='orders', on_delete=do_nothing)
     number = models.CharField(max_length=16, unique=True, verbose_name=_('Order Number'))
-    status = models.CharField(max_length=2, choices=status_choices, verbose_name=_('Order Status'))
+    status = models.CharField(max_length=2, choices=status_choices, verbose_name=_('Order Status'), default='P')
 
     @property
     def products_count(self):

@@ -60,9 +60,8 @@ class ProductSerializer(ModelSerializer):
         }
 
 
-
 class OrderLineSerializer(ModelSerializer):
-    total = ReadOnlyField(source='total')
+    total = ReadOnlyField()
 
     class Meta:
         model = OrderLine
