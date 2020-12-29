@@ -84,10 +84,19 @@ class OrderSerializer(ModelSerializer):
     def create(self, validated_data):
         lines = validated_data.pop('lines')
         number = Order.generate_number()
-        order = Order.objects.create(number=number,profile=self.context['request'].user.profile, **validated_data)
+        order = Order.objects.create(number=number, profile=self.context['request'].user.profile, **validated_data)
         for line in lines:
             OrderLine.objects.create(order=order, **line)
         return order
+
+    def update(self, instance, validated_data):
+        if validated_data.get('lines'):
+            lines = validated_data.pop('lines')
+            for line in lines:
+                OrderLine.objects.create(order=instance, **line)
+            return instance
+        else:
+            super(OrderSerializer, self).update(instance, validated_data)
 
     class Meta:
         model = Order
