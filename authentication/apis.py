@@ -22,7 +22,7 @@ class LoginApi(ObtainAuthToken):
         data = dict(token=token.key)
         data.update(model_to_dict(user,
                                   exclude=['password', 'is_superuser', 'is_staff', 'notification_token', 'is_active',
-                                           'visible', "user_permissions"]))
+                                           'visible', 'user_permissions', 'groups']))
 
         return Response(data)
 

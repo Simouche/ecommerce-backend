@@ -160,7 +160,7 @@ AUTH_USER_MODEL = "authentication.USER"
 
 # axes configs
 AXES_FAILURE_LIMIT = 5  # change this to a callable function from DB.
-AXES_COOLOFF_TIME = 12
+AXES_COOLOFF_TIME = 0
 AXES_LOCK_OUT_BY_USER_OR_IP = True
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 AXES_LOCKOUT_TEMPLATE = None  # lockout template
