@@ -41,7 +41,7 @@ class ColorSerializer(ModelSerializer):
 
 class ProductSerializer(ModelSerializer):
     category = StringRelatedField()
-    colors = ColorSerializer(many=True)
+    colors = ColorSerializer(many=True, required=False)
     overall = ReadOnlyField()
     total_reviews_count = ReadOnlyField()
     reviews_count_based_on_stars = ReadOnlyField()
