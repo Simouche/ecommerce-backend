@@ -8,7 +8,7 @@ from authentication.models import User, SmsVerification, Profile, City, State, R
 
 
 class UserSerializer(ModelSerializer):
-    full_name = ReadOnlyField(source='full_name')
+    full_name = ReadOnlyField()
 
     def validate(self, attrs):
         if attrs.get('user_type') == 'D' and not attrs.get('vehicle_type'):
