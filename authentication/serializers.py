@@ -31,13 +31,19 @@ class UserSerializer(ModelSerializer):
 
         return user
 
+    def update(self, instance, validated_data):
+        if validated_data.get('password', None):
+            password = validated_data.pop('password')
+            instance.set_password(password)
+        return super(UserSerializer, self).update(instance, validated_data)
+
     class Meta:
         model = User
         fields = ['id', 'phones', 'email', 'first_name', 'last_name', 'user_type', 'password',
                   'username', 'full_name', 'is_active']
         extra_kwargs = {
             "password": {"write_only": True},
-            "is_active": {"write_only": True,"required":False},
+            "is_active": {"write_only": True, "required": False},
             'photo': {'required': False},
             'id': {'read_only': True},
         }
