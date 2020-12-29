@@ -51,7 +51,7 @@ class OtpApi(APIView):
 
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
-    queryset = User.objects.filter(is_active=True)
+    queryset = User.objects.all()
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'register':
