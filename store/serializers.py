@@ -18,7 +18,6 @@ class CategorySerializer(ModelSerializer):
 
 
 class SubCategorySerializer(ModelSerializer):
-    category = StringRelatedField()
 
     class Meta:
         model = SubCategory
