@@ -70,6 +70,9 @@ class OrderLineSerializer(ModelSerializer):
             'id': {
                 'read_only': True,
             },
+            'order': {
+                'required': False
+            },
         }
 
 
