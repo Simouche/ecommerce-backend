@@ -78,6 +78,15 @@ class OrderSerializer(ModelSerializer):
     count = ReadOnlyField(source='products_count')
     lines = OrderLineSerializer(many=True)
 
+    def create(self, validated_data):
+        lines = validated_data.pop('lines')
+        number = Order.generate_number()
+        order = Order.objects.create(number=number, **validated_data)
+        order.profile = self.context['request'].user.profile
+        for line in lines:
+            OrderLine.objects.create(order=order, **line)
+        return order
+
     class Meta:
         model = Order
         fields = ['id', 'profile', 'number', 'status', 'count', 'sum', 'lines']
@@ -92,8 +101,8 @@ class OrderSerializer(ModelSerializer):
                 'read_only': True,
             },
             'status': {
-                'read_only': True,
-            },
+                'required': False,
+            }
         }
 
 
