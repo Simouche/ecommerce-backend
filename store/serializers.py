@@ -18,7 +18,6 @@ class CategorySerializer(ModelSerializer):
 
 
 class SubCategorySerializer(ModelSerializer):
-
     class Meta:
         model = SubCategory
         fields = ['id', 'name', 'category']
@@ -50,13 +49,18 @@ class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'main_image', 'slider', 'discount_price', 'colors',
-                  'dimensions',
-                  'stock', 'category', 'overall', 'total_reviews_count', 'reviews_count_based_on_stars']
+                  'dimensions', 'stock', 'category', 'overall', 'total_reviews_count', 'reviews_count_based_on_stars']
         extra_kwargs = {
             'id': {
                 'read_only': True,
+            },
+            'colors': {
+                'required': False
             }
         }
+
+    def create(self, validated_data):
+        pass
 
 
 class OrderLineSerializer(ModelSerializer):
@@ -68,7 +72,7 @@ class OrderLineSerializer(ModelSerializer):
         extra_kwargs = {
             'id': {
                 'read_only': True,
-            }
+            },
         }
 
 
