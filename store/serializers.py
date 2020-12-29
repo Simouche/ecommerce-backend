@@ -59,8 +59,6 @@ class ProductSerializer(ModelSerializer):
             }
         }
 
-    def create(self, validated_data):
-        pass
 
 
 class OrderLineSerializer(ModelSerializer):
