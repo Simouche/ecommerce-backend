@@ -1,4 +1,3 @@
-from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from store.apis import CategoryViewSet, SubCategoryViewSet, ColorViewSet, ProductViewSet, OrderViewSet, \

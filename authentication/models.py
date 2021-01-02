@@ -11,6 +11,12 @@ class User(bUser):
 
 
 class Profile(bProfile):
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.user
+
     def __str__(self):
         return self.user.full_name
 

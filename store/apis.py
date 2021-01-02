@@ -1,4 +1,4 @@
-from base_backend.permissions import IsAdminOrReadOnly
+from base_backend.permissions import IsAdminOrReadOnly, IsAdminOrIsOwner
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
@@ -36,19 +36,33 @@ class ProductViewSet(ModelViewSet):
 class OrderLineViewSet(ModelViewSet):
     serializer_class = OrderLineSerializer
     queryset = OrderLine.objects.filter(visible=True)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrIsOwner]
 
 
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.filter(visible=True)
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrIsOwner]
+
+    def get_queryset(self):
+        queryset = super(OrderViewSet, self).get_queryset()
+        if self.user.is_staff:
+            return queryset
+        else:
+            return queryset.filter(profile__user=self.request.user)
 
 
 class FavoriteViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = FavoriteSerializer
     queryset = Favorite.objects.filter(visible=True)
+
+    def get_queryset(self):
+        queryset = super(FavoriteViewSet, self).get_queryset()
+        if self.user.is_staff:
+            return queryset
+        else:
+            return queryset.filter(profile__user=self.request.user)
 
 
 class RateViewSet(ModelViewSet):

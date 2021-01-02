@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'axes',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -166,6 +168,12 @@ AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 AXES_LOCKOUT_TEMPLATE = None  # lockout template
 AXES_RESET_ON_SUCCESS = True
 
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'localhost',
+    '*'
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -179,5 +187,4 @@ BASE_BACKEND = {
     "PHONE_VERIFICATION_OTP_TABLE": "authentication.SmsVerification",
     "PASSWORD_RESET_TABLE": "authentication.PasswordReset",
     "REQUIRED_FIELDS": ['password'],
-
 }

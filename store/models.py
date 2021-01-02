@@ -3,7 +3,6 @@ import decimal
 from base_backend.models import DeletableModel, _, do_nothing
 from django.contrib.postgres.fields import ArrayField, DateRangeField
 from django.db import models
-
 # Create your models here.
 from django.db.models import Avg, Sum, F
 
@@ -112,6 +111,12 @@ class Order(DeletableModel):
     number = models.CharField(max_length=16, unique=True, verbose_name=_('Order Number'))
     status = models.CharField(max_length=2, choices=status_choices, verbose_name=_('Order Status'), default='P')
 
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.profile.user
+
     @property
     def products_count(self):
         return self.get_lines.aggregate(count=Sum('quantity')).get('count', 0)
@@ -161,6 +166,12 @@ class Favorite(DeletableModel):
     profile = models.ForeignKey('authentication.Profile', related_name='favorites', on_delete=do_nothing)
     product = models.ForeignKey('Product', related_name='favorites', on_delete=do_nothing)
 
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.profile.owner
+
     class Meta:
         verbose_name = _('Favorite')
         verbose_name_plural = _('Favorites')
@@ -171,6 +182,12 @@ class Rate(DeletableModel):
     comment = models.CharField(max_length=255, null=True, verbose_name=_('Comment'))
     profile = models.ForeignKey('authentication.Profile', related_name='ratings', on_delete=do_nothing)
     product = models.ForeignKey('Product', related_name='ratings', on_delete=do_nothing)
+
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.profile.user
 
     class Meta:
         verbose_name = _('Rating')
@@ -189,6 +206,12 @@ class Like(DeletableModel):
     profile = models.ForeignKey('authentication.Profile', related_name='likes', on_delete=do_nothing)
     product = models.ForeignKey('Product', related_name='likes', on_delete=do_nothing)
 
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.profile.user
+
     class Meta:
         verbose_name = _('Like')
         verbose_name_plural = _('Likes')
@@ -198,6 +221,12 @@ class CartLine(DeletableModel):
     product = models.ForeignKey('Product', related_name='cart_lines', on_delete=do_nothing)
     cart = models.ForeignKey('Cart', related_name='lines', on_delete=do_nothing)
     quantity = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Quantity'))
+
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.cart.get_owner
 
     def _total_sum(self):
         return self.product.price * self.quantity
@@ -213,6 +242,12 @@ class CartLine(DeletableModel):
 
 class Cart(DeletableModel):
     profile = models.OneToOneField('authentication.Profile', related_name='cart', on_delete=do_nothing)
+
+    OWNER_FIELD = 'get_owner'
+
+    @property
+    def get_owner(self):
+        return self.profile.user
 
     @property
     def products_count(self):
