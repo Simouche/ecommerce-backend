@@ -54,7 +54,7 @@ class Product(DeletableModel):
                                          blank=True)
     colors = models.ManyToManyField('Color', related_name='products', null=True, blank=True)
     dimensions = models.CharField(max_length=30, verbose_name=_('Dimensions'), null=True, blank=True)
-    stock = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    stock = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     category = models.ForeignKey('SubCategory', on_delete=do_nothing, related_name='products',
                                  verbose_name=_('Category'), null=True, blank=True)
 
@@ -80,6 +80,17 @@ class Product(DeletableModel):
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
+
+
+class ColorImages(DeletableModel):
+    product = models.ForeignKey('Product', on_delete=do_nothing, related_name="color_images")
+    color = models.ForeignKey('Color', on_delete=do_nothing, related_name="products_images")
+    image = models.ImageField(upload_to="products")
+
+    class Meta:
+        verbose_name = _('Colored Images')
+        verbose_name_plural = _('Colored Images')
+
 
 
 class OrderLine(DeletableModel):

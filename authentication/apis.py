@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.forms import model_to_dict
+from django.utils import timezone
 from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -17,7 +20,12 @@ class LoginApi(ObtainAuthToken):
                                            context=dict(request=request))
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        user.last_login = timezone.make_aware(datetime.now(), timezone.get_default_timezone())
+
         token, created = Token.objects.get_or_create(user=user)
+        if not created:
+            token.delete()
+            token, created = Token.objects.get_or_create(user=user)
 
         data = dict(token=token.key)
         data.update(model_to_dict(user,
