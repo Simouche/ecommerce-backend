@@ -40,7 +40,7 @@ class ColorSerializer(ModelSerializer):
 
 
 class ProductSerializer(ModelSerializer):
-    category = StringRelatedField()
+    category_name = StringRelatedField(source="category")
     colors = ColorSerializer(many=True, required=False)
     overall = ReadOnlyField()
     total_reviews_count = ReadOnlyField()
@@ -49,10 +49,14 @@ class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'main_image', 'slider', 'discount_price', 'colors',
-                  'dimensions', 'stock', 'category', 'overall', 'total_reviews_count', 'reviews_count_based_on_stars']
+                  'dimensions', 'stock', 'category', 'category_name', 'overall', 'total_reviews_count',
+                  'reviews_count_based_on_stars']
         extra_kwargs = {
             'id': {
                 'read_only': True,
+            },
+            'category': {
+                'write_only': True,
             },
             'colors': {
                 'required': False

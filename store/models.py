@@ -80,6 +80,7 @@ class Product(DeletableModel):
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
+        ordering = ['-id']
 
 
 class ColorImages(DeletableModel):
@@ -90,7 +91,6 @@ class ColorImages(DeletableModel):
     class Meta:
         verbose_name = _('Colored Images')
         verbose_name_plural = _('Colored Images')
-
 
 
 class OrderLine(DeletableModel):
