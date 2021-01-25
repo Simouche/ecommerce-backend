@@ -52,7 +52,7 @@ class Product(DeletableModel):
     slider = ArrayField(models.CharField(max_length=255, ), null=True, blank=True)
     discount_price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('Discount Price'), null=True,
                                          blank=True)
-    colors = models.ManyToManyField('Color', related_name='products', null=True, blank=True)
+    colors = models.ManyToManyField('Color', related_name='products', blank=True)
     dimensions = models.CharField(max_length=30, verbose_name=_('Dimensions'), null=True, blank=True)
     stock = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     category = models.ForeignKey('SubCategory', on_delete=do_nothing, related_name='products',
