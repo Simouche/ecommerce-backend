@@ -26,8 +26,15 @@ class UserSerializer(ModelSerializer):
             user.groups.add(Group.objects.get_or_create(name='client')[0])
         elif user_type == 'A':
             user.groups.add(Group.objects.get_or_create(name='admin')[0])
+            user.is_staff = True
+            user.is_superuser = True
+            user.is_active = True
         elif user_type == 'S':
             user.groups.add(Group.objects.get_or_create(name='staff')[0])
+            user.is_staff = True
+            user.is_active = True
+
+        user.save()
 
         return user
 

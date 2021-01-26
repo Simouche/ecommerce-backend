@@ -70,6 +70,7 @@ class UserViewSet(ModelViewSet):
     @action(methods=['post'], detail=False, url_path='register', permission_classes=[permissions.AllowAny()])
     def register(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
+        response.status_code = 201
         if response:
             response.data = dict(status=True, code=4)
         return response
