@@ -63,9 +63,9 @@ class UserViewSet(ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create' or self.action == 'register':
-            return [permissions.AllowAny]
+            return [permissions.AllowAny()]
         else:
-            return [permissions.IsAuthenticatedOrReadOnly]
+            return [permissions.IsAuthenticatedOrReadOnly()]
 
     @action(methods=['post'], detail=False, url_path='register', permission_classes=[permissions.AllowAny()])
     def register(self, request, *args, **kwargs):
