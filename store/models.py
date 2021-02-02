@@ -52,7 +52,7 @@ class Product(DeletableModel):
     description = models.TextField(verbose_name=_('Description'))
     price = models.DecimalField(verbose_name=_('Price'), max_digits=10, decimal_places=2)
     main_image = models.ImageField(verbose_name=_('Main Image'), upload_to='products')  # ToDo add save to
-    slider = ArrayField(models.CharField(max_length=255, ), null=True, blank=True)
+    slider = models.CharField(max_length=255, null=True, blank=True)
     discount_price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('Discount Price'), null=True,
                                          blank=True)
     colors = models.ManyToManyField('Color', related_name='products', blank=True)
