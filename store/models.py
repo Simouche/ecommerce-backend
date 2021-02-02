@@ -66,6 +66,8 @@ class Product(DeletableModel):
 
     @property
     def slider_urls(self):
+        if not self.slider:
+            return []
         images = []
         paths = os.listdir(self.slider)
         for path in paths:
