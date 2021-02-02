@@ -1,3 +1,4 @@
+from base_backend.utils import handle_uploaded_file
 from rest_framework.fields import ReadOnlyField
 from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer
@@ -45,12 +46,22 @@ class ProductSerializer(ModelSerializer):
     overall = ReadOnlyField()
     total_reviews_count = ReadOnlyField()
     reviews_count_based_on_stars = ReadOnlyField()
+    slider_urls = ReadOnlyField()
+
+    def create(self, validated_data):
+        slider = validated_data.pop("slider") if validated_data.get('slider') else []
+        path = Product.make_product_slider_directory()
+        for image in slider:
+            handle_uploaded_file(image, path + image.name)
+        validated_data.update({'slider': path})
+        product = Product.objects.create(**validated_data)
+        return product
 
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'main_image', 'slider', 'discount_price', 'colors',
                   'dimensions', 'stock', 'category', 'category_name', 'overall', 'total_reviews_count',
-                  'reviews_count_based_on_stars']
+                  'reviews_count_based_on_stars', 'slider_urls']
         extra_kwargs = {
             'id': {
                 'read_only': True,

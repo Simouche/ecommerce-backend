@@ -192,3 +192,5 @@ BASE_BACKEND = {
     "PASSWORD_RESET_TABLE": "authentication.PasswordReset",
     "REQUIRED_FIELDS": ['password'],
 }
+
+HOST_NAME = 'http://35.228.132.188/'

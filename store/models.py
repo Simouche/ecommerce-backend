@@ -1,4 +1,6 @@
 import decimal
+import os
+import uuid
 
 from base_backend.models import DeletableModel, _, do_nothing
 from django.contrib.postgres.fields import ArrayField, DateRangeField
@@ -6,6 +8,7 @@ from django.db import models
 # Create your models here.
 from django.db.models import Avg, Sum, F
 
+from ecommerce.settings import MEDIA_ROOT, MEDIA_URL, HOST_NAME
 from store.managers import CustomCategoryManager
 
 
@@ -62,6 +65,14 @@ class Product(DeletableModel):
         return self.name
 
     @property
+    def slider_urls(self):
+        images = []
+        paths = os.listdir(self.slider)
+        for path in paths:
+            images.append(HOST_NAME + self.slider + path)
+        return images
+
+    @property
     def overall(self):
         return self.ratings.filter(visible=True).aggregate(overall=Avg('stars')).get('overall', 0) or 0
 
@@ -76,6 +87,12 @@ class Product(DeletableModel):
                 self.ratings.filter(visible=True, stars__in=[2.1, 3.1]).count(),
                 self.ratings.filter(visible=True, stars__in=[3.1, 4]).count(),
                 self.ratings.filter(visible=True, stars__in=[4.1, 5.1]).count()]
+
+    @staticmethod
+    def make_product_slider_directory():
+        path = os.path.join(MEDIA_ROOT, "products/sliders", uuid.uuid4().__str__())
+        os.makedirs(path, exist_ok=True)
+        return path + "/"
 
     class Meta:
         verbose_name = _('Product')
