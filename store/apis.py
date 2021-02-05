@@ -1,4 +1,6 @@
 from base_backend.permissions import IsAdminOrReadOnly, IsAdminOrIsOwner
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -83,6 +85,15 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.filter(visible=True)
     permission_classes = [IsAdminOrReadOnly]
     filterset_class = ProductFilter
+    model = Product
+
+    @action(methods=['delete'], detail=False, url_path='multiple', permission_classes=[IsAdminUser])
+    def delete_many(self, request, *args, **kwargs):
+        products_ids = request.data.get('ids')
+        print(products_ids)
+        products = self.get_queryset().filter(pk__in=products_ids)
+        products.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class OrderLineViewSet(ModelViewSet):
