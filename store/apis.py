@@ -87,10 +87,9 @@ class ProductViewSet(ModelViewSet):
     filterset_class = ProductFilter
     model = Product
 
-    @action(methods=['delete'], detail=False, url_path='multiple', permission_classes=[IsAdminUser])
+    @action(methods=['post'], detail=False, url_path='multiple', permission_classes=[IsAdminUser])
     def delete_many(self, request, *args, **kwargs):
         products_ids = request.data.get('ids')
-        print(products_ids)
         products = self.get_queryset().filter(pk__in=products_ids)
         products.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
