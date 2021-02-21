@@ -85,7 +85,7 @@ class OrderLineSerializer(ModelSerializer):
 
     class Meta:
         model = OrderLine
-        fields = ['id', 'product', 'order', 'quantity', 'on_discount', 'total']
+        fields = ['id', 'product', 'order', 'quantity', 'on_discount', 'total', 'product__name']
         extra_kwargs = {
             'id': {
                 'read_only': True,
