@@ -47,7 +47,7 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'phones', 'email', 'first_name', 'last_name', 'user_type', 'password',
-                  'username', 'full_name', 'is_active']
+                  'username', 'full_name', 'is_active', 'profile']
         extra_kwargs = {
             "password": {"write_only": True},
             "is_active": {"write_only": True, "required": False},
@@ -91,7 +91,7 @@ class ProfileSerializer(ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'photo', 'address', 'city', 'birth_date', 'gender']
+        fields = ['id', 'user', 'photo', 'address', 'city', 'city__name', 'birth_date', 'gender']
         extra_kwargs = {
             'id': {
                 'read_only': True,

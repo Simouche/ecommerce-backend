@@ -1,4 +1,5 @@
 from base_backend.permissions import IsAdminOrReadOnly, IsAdminOrIsOwner
+from django.db.models import Count, Sum
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from authentication.models import User
 from store.filters import ProductFilter
 from store.models import Category, SubCategory, Color, Product, OrderLine, Order, Favorite, Rate, Like, \
     ProductOnSeasonalDiscount, SeasonalDiscount, DeliveryFee
@@ -30,6 +32,8 @@ class DashboardStatistics(APIView):
             "confirmed_orders": self.get_confirmed_orders(),
             "delivered_orders": self.get_delivered_orders(),
             "on_delivery_orders": self.get_on_delivery_orders(),
+            "total_clients": self.get_total_clients(),
+            "product_statistics": self.get_products_sales(),
         }
 
         return Response(data)
@@ -60,6 +64,16 @@ class DashboardStatistics(APIView):
     def get_total_orders(self):
         queryset = self.get_queryset()
         return queryset.count()
+
+    def get_total_clients(self):
+        return User.objects.filter(user_type='C').count()
+
+    def get_products_sales(self):
+        data = Product.objects \
+            .all() \
+            .annotate(sales=Count("orders_lines"), sold_quantity=Sum("orders_lines__quantity")) \
+            .values("id", "name", "price", "stock", "sales", "sold_quantity")
+        return data
 
 
 class CategoryViewSet(ModelViewSet):

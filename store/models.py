@@ -125,6 +125,11 @@ class OrderLine(DeletableModel):
     def total(self):
         return self.product.price * self.quantity
 
+    def delete(self, using=None, keep_parents=False):
+        super(OrderLine, self).delete(using, keep_parents)
+        from store.signals import order_line_deleted
+        order_line_deleted.send(sender=self.__class__, instance=self)
+
     class Meta:
         verbose_name = _('Order Line')
         verbose_name_plural = _('Order Lines')
