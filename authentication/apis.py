@@ -32,7 +32,7 @@ class LoginApi(ObtainAuthToken):
         data.update(model_to_dict(user,
                                   exclude=['password', 'is_superuser', 'is_staff', 'notification_token', 'is_active',
                                            'visible', 'user_permissions', 'groups']))
-        data.update({'profile': user.profile})
+        data.update({'profile': model_to_dict(user.profile, exclude=['created_at'])})
 
         return Response(data)
 
