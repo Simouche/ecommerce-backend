@@ -6,6 +6,7 @@ from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -31,6 +32,7 @@ class LoginApi(ObtainAuthToken):
         data.update(model_to_dict(user,
                                   exclude=['password', 'is_superuser', 'is_staff', 'notification_token', 'is_active',
                                            'visible', 'user_permissions', 'groups']))
+        data.update({'profile': user.profile})
 
         return Response(data)
 
@@ -83,3 +85,9 @@ class ProfileViewSet(ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.filter(visible=True)
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @action(methods=['get'], detail=True, url_path='by-user-id')
+    def get_by_user_id(self, request, *args, **kwargs):
+        profile = get_object_or_404(self.get_queryset(), user_id=self.kwargs.get("pk"))
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)

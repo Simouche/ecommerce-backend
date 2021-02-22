@@ -1,7 +1,7 @@
 from base_backend.utils import activate_user_over_otp, phone_reconfirmation
 from django.contrib.auth.models import Group
 from rest_framework import serializers
-from rest_framework.fields import ReadOnlyField
+from rest_framework.fields import ReadOnlyField, SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from authentication.models import User, SmsVerification, Profile, City, State, Region
@@ -88,15 +88,21 @@ class SmsConfirmationSerializer(ModelSerializer):
 
 class ProfileSerializer(ModelSerializer):
     user = UserSerializer()
+    city_name = SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'photo', 'address', 'city', 'city__name', 'birth_date', 'gender']
+        fields = ['id', 'user', 'photo', 'address', 'city', 'city_name', 'birth_date', 'gender']
         extra_kwargs = {
             'id': {
                 'read_only': True,
             }
         }
+
+    def get_city_name(self, obj):
+        if not obj.city:
+            return ""
+        return obj.city.name
 
 
 class CitySerializer(ModelSerializer):
