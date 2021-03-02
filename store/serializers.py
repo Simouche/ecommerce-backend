@@ -82,10 +82,11 @@ class ProductSerializer(ModelSerializer):
 
 class OrderLineSerializer(ModelSerializer):
     total = ReadOnlyField()
+    product_name = StringRelatedField(source="product")
 
     class Meta:
         model = OrderLine
-        fields = ['id', 'product', 'order', 'quantity', 'on_discount', 'total', 'product__name']
+        fields = ['id', 'product', 'order', 'quantity', 'on_discount', 'total', 'product_name']
         extra_kwargs = {
             'id': {
                 'read_only': True,

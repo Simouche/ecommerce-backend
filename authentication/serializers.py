@@ -24,6 +24,7 @@ class UserSerializer(ModelSerializer):
 
         if user_type == 'C':
             user.groups.add(Group.objects.get_or_create(name='client')[0])
+            user.is_active = True
         elif user_type == 'A':
             user.groups.add(Group.objects.get_or_create(name='admin')[0])
             user.is_staff = True
