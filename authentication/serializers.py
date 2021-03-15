@@ -54,6 +54,7 @@ class UserSerializer(ModelSerializer):
             "is_active": {"write_only": True, "required": False},
             'photo': {'required': False},
             'id': {'read_only': True},
+            'profile': {'read_only': True},
         }
 
 

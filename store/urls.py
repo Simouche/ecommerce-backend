@@ -3,7 +3,7 @@ from rest_framework.routers import SimpleRouter
 
 from store.apis import CategoryViewSet, SubCategoryViewSet, ColorViewSet, ProductViewSet, OrderViewSet, \
     OrderLineViewSet, FavoriteViewSet, RateViewSet, LikeViewSet, SeasonalDiscountViewSet, \
-    ProductOnSeasonalDiscountViewSet, DeliveryFeeViewSet, DashboardStatistics
+    ProductOnSeasonalDiscountViewSet, DeliveryFeeViewSet
 
 router = SimpleRouter()
 
@@ -21,5 +21,5 @@ router.register('seasonal-discount', SeasonalDiscountViewSet, basename='seasonal
 router.register('delivery-fees', DeliveryFeeViewSet, basename='delivery-fees')
 
 urlpatterns = [
-                  path('dashboard/statistics/', DashboardStatistics.as_view(), name="dashboard-statistics")
+
               ] + router.urls

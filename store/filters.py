@@ -13,4 +13,4 @@ class ProductFilter(filters.FilterSet):
         model = Product
         fields = ['category', 'category__name', 'category__category', 'category__category__name', 'price',
                   'min_price', 'max_price', 'min_discount_price', 'max_discount_price', 'colors__id', 'colors__name',
-                  'colors__hex','name']
+                  'colors__hex', 'name']
