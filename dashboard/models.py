@@ -6,8 +6,7 @@ from django.db import models
 
 
 class BaseAdvertisement(DeletableModel):
-    receivers = models.ManyToManyField('authentication.User', related_name="received_emails",
-                                       verbose_name=_('Receivers'))
+    receivers = models.ManyToManyField('authentication.User', verbose_name=_('Receivers'))
     content = models.TextField(verbose_name=_('Content'))
     send_date = models.DateTimeField(null=True, blank=True)
 
